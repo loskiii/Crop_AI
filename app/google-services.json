@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "468981786389",
+    "project_id": "cropdiseasediagnosis-5c2b5",
+    "storage_bucket": "cropdiseasediagnosis-5c2b5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468981786389:android:749a61aaaef7ee6bfc2b1c",
+        "android_client_info": {
+          "package_name": "com.jkuat.cropdiagnosis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6NMRmSG_Kdbf0sjWz0pDWhi3-FAoaBbM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
