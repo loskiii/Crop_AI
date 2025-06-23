@@ -1,74 +1,32 @@
 package com.jkuat.cropdiagnosis
 
-import android.Manifest
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.google.accompanist.permissions.*
-import com.jkuat.cropdiagnosis.components.CameraPreview
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import com.jkuat.cropdiagnosis.screens.CameraScreen
+import com.jkuat.cropdiagnosis.ui.theme.CropDiagnosisTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
-@Composable
-fun CameraScreen(
-    onNavigateBack: () -> Unit,
-    onNavigateToResult: (String) -> Unit
-) {
-    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
-    LaunchedEffect(Unit) {
-        cameraPermissionState.launchPermissionRequest()
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopAppBar(
-            title = { Text("Scan Crop") },
-            navigationIcon = {
-                IconButton(onClick = onNavigateBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back"
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-            )
-        )
-
-        // ✅ SAFELY CHECK GRANTED PERMISSION
-        if (cameraPermissionState.status is PermissionStatus.Granted) {
-            CameraPreview(
-                onImageCaptured = {
-                    // Process image and navigate to result
-                    onNavigateToResult("sample_result")
-                },
-                modifier = Modifier.fillMaxSize()
-            )
-        } else {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Camera permission required",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
-                        Text("Grant Permission")
-                    }
-                }
-            }
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            CropDiagnosisApp()
         }
+    }
+}
+
+@Composable
+fun CropDiagnosisApp() {
+    CropDiagnosisTheme {
+        CameraScreen(
+            onNavigateBack = { /* Handle back */ },
+            onNavigateToResult = {
+                // Handle result navigation
+            }
+        )
     }
 }
