@@ -127,21 +127,6 @@ Our mobile app leverages **Artificial Intelligence**, **Computer Vision**, and *
 - **Testing**: JUnit, Espresso
 - **Documentation**: Markdown
 
----
-
-## 📱 Screenshots
-
-<div align="center">
-
-| Home Screen | Camera View | Diagnosis Result |
-|-------------|-------------|------------------|
-| ![Home](https://via.placeholder.com/250x450/2E7D1C/FFFFFF?text=Home+Screen) | ![Camera](https://via.placeholder.com/250x450/53634F/FFFFFF?text=Camera+View) | ![Result](https://via.placeholder.com/250x450/386569/FFFFFF?text=Diagnosis+Result) |
-
-| Disease Guide | History | Settings |
-|---------------|---------|----------|
-| ![Guide](https://via.placeholder.com/250x450/BA1A1A/FFFFFF?text=Disease+Guide) | ![History](https://via.placeholder.com/250x450/2E7D1C/FFFFFF?text=History) | ![Settings](https://via.placeholder.com/250x450/53634F/FFFFFF?text=Settings) |
-
-</div>
 
 ---
 
