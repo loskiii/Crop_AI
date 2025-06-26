@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.jkuat.cropdiagnosis.presentation.screens.ResultScreen
-
 
 @Composable
 fun CropDiagnosisNavigation(navController: NavHostController) {
@@ -51,13 +49,3 @@ fun CropDiagnosisNavigation(navController: NavHostController) {
         }
     }
 }
-
-//@Composable
-//fun GuideScreen(onNavigateBack: () -> Boolean) {
-//
-//}
-//
-//@Composable
-//fun HistoryScreen(onNavigateBack: () -> Boolean) {
-//
-//}

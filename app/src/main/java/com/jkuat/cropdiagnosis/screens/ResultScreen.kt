@@ -1,4 +1,4 @@
-package com.jkuat.cropdiagnosis.presentation.screens
+package com.jkuat.cropdiagnosis.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,7 +24,6 @@ fun ResultScreen(
     resultId: String,
     onNavigateBack: () -> Unit
 ) {
-    // Mock result - replace with actual data loading
     val result = DiagnosisResult(
         id = resultId,
         cropType = "Tomato",
@@ -36,148 +35,91 @@ fun ResultScreen(
         severity = DiseaseSeverity.HIGH
     )
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopAppBar(
-            title = { Text("Diagnosis Result") },
-            navigationIcon = {
-                IconButton(onClick = onNavigateBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Diagnosis Result") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /* Save */ }) {
+                        Icon(Icons.Default.BookmarkBorder, contentDescription = "Save")
+                    }
+                    IconButton(onClick = { /* Share */ }) {
+                        Icon(Icons.Default.Share, contentDescription = "Share")
+                    }
                 }
-            },
-            actions = {
-                IconButton(onClick = { /* Save result */ }) {
-                    Icon(Icons.Default.BookmarkBorder, contentDescription = "Save")
-                }
-                IconButton(onClick = { /* Share result */ }) {
-                    Icon(Icons.Default.Share, contentDescription = "Share")
-                }
-            }
-        )
-
+            )
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
+                .padding(innerPadding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Confidence card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (result.confidence >= 0.8f)
-                        MaterialTheme.colorScheme.primaryContainer
-                    else MaterialTheme.colorScheme.errorContainer
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column {
-                            Text(
-                                text = result.diseaseName,
-                                style = MaterialTheme.typography.headlineSmall.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = "in ${result.cropType}",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
+            DiagnosisCard(result)
+            InfoSection("Description", Icons.Default.Info, result.description)
+            InfoSection("Treatment", Icons.Default.LocalHospital, result.treatment, MaterialTheme.colorScheme.secondaryContainer)
+            InfoSection("Prevention", Icons.Default.Shield, result.prevention, MaterialTheme.colorScheme.tertiaryContainer)
 
-                        Column(
-                            horizontalAlignment = Alignment.End
-                        ) {
-                            Text(
-                                text = "${(result.confidence * 100).toInt()}%",
-                                style = MaterialTheme.typography.headlineMedium.copy(
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = "Confidence",
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Severity indicator
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(12.dp)
-                                .clip(RoundedCornerShape(6.dp))
-                                .background(result.severity.color)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "${result.severity.displayName} Severity",
-                            style = MaterialTheme.typography.labelLarge.copy(
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
-                    }
-                }
-            }
-
-            // Description section
-            InfoSection(
-                title = "Description",
-                icon = Icons.Default.Info,
-                content = result.description
-            )
-
-            // Treatment section
-            InfoSection(
-                title = "Recommended Treatment",
-                icon = Icons.Default.LocalHospital,
-                content = result.treatment,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer
-            )
-
-            // Prevention section
-            InfoSection(
-                title = "Prevention Tips",
-                icon = Icons.Default.Shield,
-                content = result.prevention,
-                backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
-            )
-
-            // Action buttons
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OutlinedButton(
-                    onClick = { /* Get expert help */ },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(Icons.Default.Support, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Get Expert Help")
+                OutlinedButton(onClick = { }) {
+                    Icon(Icons.Default.Support, null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Expert Help")
                 }
+                Button(onClick = { }) {
+                    Icon(Icons.Default.CameraAlt, null)
+                    Spacer(Modifier.width(8.dp))
+                    Text("Scan Again")
+                }
+            }
+        }
+    }
+}
 
-                Button(
-                    onClick = { /* Scan another */ },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Icon(Icons.Default.CameraAlt, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Scan Another")
+@Composable
+fun DiagnosisCard(result: DiagnosisResult) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(result.diseaseName, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
+                    Text("in ${result.cropType}", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text("${(result.confidence * 100).toInt()}%", style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold))
+                    Text("Confidence")
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    Modifier
+                        .size(12.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(result.severity.color)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text("${result.severity.displayName} Severity", style = MaterialTheme.typography.labelLarge)
             }
         }
     }
@@ -194,32 +136,14 @@ fun InfoSection(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 12.dp)
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.SemiBold
-                    )
-                )
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Spacer(Modifier.width(8.dp))
+                Text(title, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
             }
-
-            Text(
-                text = content,
-                style = MaterialTheme.typography.bodyMedium,
-                lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * 1.2
-            )
+            Spacer(Modifier.height(8.dp))
+            Text(content, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

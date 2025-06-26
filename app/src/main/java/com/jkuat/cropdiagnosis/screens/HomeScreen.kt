@@ -1,16 +1,20 @@
 package com.jkuat.cropdiagnosis.screens
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -19,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onNavigateToCamera: () -> Unit,
@@ -34,14 +37,14 @@ fun HomeScreen(
             .verticalScroll(scrollState)
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Header with gradient
+        // 🌱 Header Section with Gradient
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(220.dp)
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(
+                        listOf(
                             MaterialTheme.colorScheme.primary,
                             MaterialTheme.colorScheme.primaryContainer
                         )
@@ -51,7 +54,7 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
+                    .padding(start = 24.dp, end = 24.dp, top = 40.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
@@ -61,9 +64,9 @@ fun HomeScreen(
                         fontWeight = FontWeight.Bold
                     )
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "AI-powered crop disease diagnosis for better harvests",
+                    text = "AI-powered crop disease diagnosis",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f)
                     )
@@ -71,15 +74,11 @@ fun HomeScreen(
             }
         }
 
-        // Quick actions
-        Column(
-            modifier = Modifier.padding(24.dp)
-        ) {
+        // 🚀 Quick Actions
+        Column(modifier = Modifier.padding(24.dp)) {
             Text(
-                text = "Quick Actions",
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.SemiBold
-                ),
+                "Quick Actions",
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
@@ -94,7 +93,6 @@ fun HomeScreen(
                     onClick = onNavigateToCamera,
                     modifier = Modifier.weight(1f)
                 )
-
                 QuickActionCard(
                     title = "History",
                     subtitle = "View past scans",
@@ -108,17 +106,15 @@ fun HomeScreen(
 
             QuickActionCard(
                 title = "Disease Guide",
-                subtitle = "Learn about crop diseases and treatments",
-                icon = Icons.Default.MenuBook,
+                subtitle = "Learn about crop diseases",
+                icon = Icons.AutoMirrored.Filled.MenuBook,
                 onClick = onNavigateToGuide,
                 modifier = Modifier.fillMaxWidth()
             )
         }
 
-        // Supported crops section
-        Column(
-            modifier = Modifier.padding(horizontal = 24.dp)
-        ) {
+        // 🌾 Supported Crops
+        Column(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(
                 text = "Supported Crops",
                 style = MaterialTheme.typography.headlineSmall.copy(
@@ -132,7 +128,7 @@ fun HomeScreen(
                 contentPadding = PaddingValues(end = 24.dp)
             ) {
                 items(getSupportedCrops()) { crop ->
-                    CropCard(crop = crop)
+                    CropCard(crop)
                 }
             }
         }
@@ -151,7 +147,9 @@ fun QuickActionCard(
 ) {
     Card(
         modifier = modifier
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .animateContentSize(),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
@@ -169,13 +167,11 @@ fun QuickActionCard(
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.SemiBold
-                )
+                title,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
             )
             Text(
-                text = subtitle,
+                subtitle,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -189,6 +185,7 @@ fun CropCard(crop: CropInfo) {
         modifier = Modifier
             .width(120.dp)
             .height(140.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
@@ -201,16 +198,11 @@ fun CropCard(crop: CropInfo) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = crop.emoji,
-                fontSize = 40.sp
-            )
+            Text(text = crop.emoji, fontSize = 36.sp)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = crop.name,
-                style = MaterialTheme.typography.titleSmall.copy(
-                    fontWeight = FontWeight.Medium
-                ),
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
                 maxLines = 1
             )
             Text(
