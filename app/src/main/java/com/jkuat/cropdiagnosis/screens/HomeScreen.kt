@@ -27,7 +27,8 @@ import androidx.compose.ui.unit.sp
 fun HomeScreen(
     onNavigateToCamera: () -> Unit,
     onNavigateToHistory: () -> Unit,
-    onNavigateToGuide: () -> Unit
+    onNavigateToGuide: () -> Unit,
+    onNavigateToCropPicker: () -> Unit // 🔥 Added this
 ) {
     val scrollState = rememberScrollState()
 
@@ -111,6 +112,16 @@ fun HomeScreen(
                 onClick = onNavigateToGuide,
                 modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // 🧠 NEW: Diagnosis Tools button
+            Button(
+                onClick = onNavigateToCropPicker,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("🧠 Diagnosis Tools")
+            }
         }
 
         // 🌾 Supported Crops

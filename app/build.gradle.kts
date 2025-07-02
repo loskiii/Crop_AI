@@ -119,6 +119,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //ImageUrl
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
 }
 
 kapt {
